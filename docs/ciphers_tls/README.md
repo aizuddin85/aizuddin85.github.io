@@ -1,6 +1,6 @@
 # ENABLING MODERN TLS & CIPHERS ON ROUTER & MASTER
 
-## __INTRODUCTION__
+## __1. INTRODUCTION__
 
 During VA scan, some cipher considered as not safe and need to be disabled. There are two places that we need to configure:
 
@@ -10,7 +10,7 @@ During VA scan, some cipher considered as not safe and need to be disabled. Ther
 2. Router
 
 
-## __CONFIGURATION STEPS__
+## __2. CONFIGURATION STEPS__
 
 
 ### __MASTER.__
@@ -30,7 +30,7 @@ On all master nodes:
 
 ### __ROUTER.__
 
-There are several built-in router cipher suite [[1]](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Fdocs.openshift.com%2Fcontainer-platform%2F3.11%2Farchitecture%2Fnetworking%2Froutes.html%23ciphers). To set router cipher to modern, update the router dc environment.
+There are several built-in router cipher suite [[1]](https://docs.openshift.com/container-platform/3.11/install_config/router/default_haproxy_router.html#bind-ciphers). To set router cipher to modern, update the router dc environment.
 
 ```
 [root@bastion 3.11]# oc set env dc/router ROUTER_CIPHERS=modern
@@ -60,7 +60,7 @@ The haproxy.config of the router looks like this now:
 [root@bastion ~]# 
 ```
 
-## __VERIFICATION__
+## __4. VERIFICATION__
 
 Command to check:
 ```
@@ -131,7 +131,7 @@ Nmap done: 1 IP address (1 host up) scanned in 0.74 seconds
     
       
   
-## __REFERENCES__
+## __5. REFERENCES__
 
 1. [Configure cipher-suites in etcd daemon?](https://mojo.redhat.com/external-link.jspaurl=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F3499651)
 2. [How to create a secured route using only a specific cipher? ](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F3301341)
