@@ -79,12 +79,10 @@ receivers:
     channel: '#general'
 ```
 
-
 6. Delete and recreate the secret.
 ```
 [root@bastion 3.11]# oc delete secret alertmanager-main -n openshift-monitoring
 secret "alertmanager-main" deleted
-
 [root@bastion 3.11]# oc create secret generic alertmanager-main --from-file=alertmanager.yaml -n openshift-monitoring
 secret/alertmanager-main created
 ```
@@ -102,14 +100,10 @@ https://alertmanager-main-openshift-monitoring.cloudapps.example.com/#/status
 
 ![alt text](https://aizuddin85.github.io/prometheus_alert/images/dms_verify.png	"dms_verify")
 
-  
-  
-  
-  
+
 #### __1.3.2 CONFIGURATION STEPS:  Configure secret for AlertManager & Test trigger__
 
 At this stage, we have test alerting pipeline from Prometheus to Slack using incoming webhook. Now we going to test actual operation of the Prometheus monitoring and alerting.
-
 
 As a test case, we are going:
 
