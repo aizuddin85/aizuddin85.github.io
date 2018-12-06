@@ -1,0 +1,129 @@
+<p><img alt="Table of contents" class="jive_macro jive_macro_toc" src="/images/tiny_mce4/themes/advanced/img/toc.png" jivemacro="toc" /></p>
+<p></p>
+<h1><span style="text-decoration: underline;"><strong>OCP 3.11 Alerting Mechanism (with Slack integration)</strong></span></h1>
+<p>This blog consists of two major sections:</p>
+<p></p>
+<p>1. Simple Alerting Test with Slack</p>
+<p>2.&nbsp;Editing prometheus rule CRD to create test trigger.</p>
+<p></p>
+<h2><span style="text-decoration: underline;"><strong>1.&nbsp;ALERTING TEST USING&nbsp;'<em>DeadMansSwitch'</em></strong></span></h2>
+<p></p>
+<h3><span style="text-decoration: underline;">1.1 INTRODUCTION</span></h3>
+<p>In order to receive alert from openshift-monitoring, one need to configure alertmanager route for alertname that he or she wanted to received for. In this case, we going to send all default&nbsp;alertname = <span style="text-decoration: underline;"><em>DeadMansSwitch</em></span> to Slack channel.</p>
+<p></p>
+<p><span style="text-decoration: underline;"><em>DeadMansSwitch</em></span> is one of the default general.rules that&nbsp;to ensure that the entire Alerting pipeline is working. Hence expect to received this notification from time to time (configurable delay). When it stopped notified, then high probably something is not working when alert are being sent.</p>
+<p></p>
+<h3><span style="text-decoration: underline;">1.2 HIGH-LEVEL STEPS</span></h3>
+<p>The high level steps are:</p>
+<p></p>
+<p>1. Install and enable webhook&nbsp;</p>
+<p>-<em>&nbsp;&nbsp;<a class="link-titled" href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks" title="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks">Incoming WebHooks | Slack App Directory</a>&nbsp;</em></p>
+<p></p>
+<p>2. Create Slack&nbsp;<em>incoming WebHook</em></p>
+<p><em>-&nbsp;<a class="link-titled" href="https://api.slack.com/incoming-webhooks" title="https://api.slack.com/incoming-webhooks">Incoming Webhooks | Slack</a>&nbsp;</em></p>
+<p></p>
+<p>3. Configure secret for AlertManager</p>
+<p></p>
+<h3><span style="text-decoration: underline;">1.3 CONFIGURATION STEPS</span></h3>
+<p></p>
+<h4><span style="text-decoration: underline;"><strong><em>1.3.1 Install and enable webhook.</em></strong></span></h4>
+<p>1. Login to slack, install and enable the webhook plugin if not do so.</p>
+<p></p>
+<p><img class="image-1 jive-image" src="/servlet/JiveServlet/downloadImage/38-965449-1288534/pastedImage_13.png" __jive_id="1288534" /></p>
+<h3></h3>
+<h4><span style="text-decoration: underline;"><em><strong>1.3.2 Create incoming webhook.</strong></em></span></h4>
+<p>1. Login to slack, and create incoming webhook. Click 'Add Configuration' and then 'Add Incoming WebHooks integration'. Select appropriate channel for your webhook.</p>
+<p></p>
+<p><img class="image-2 jive-image" src="/servlet/JiveServlet/downloadImage/38-965449-1288535/pastedImage_14.png" __jive_id="1288535" /></p>
+<p></p>
+<p>2. Below page will be shown once webhook created.</p>
+<p></p>
+<p><img class="image-3 jive-image" src="/servlet/JiveServlet/downloadImage/38-965449-1288536/pastedImage_15.png" __jive_id="1288536" /></p>
+<p></p>
+<p>3. In order to test the webhook, there will be an cURL example to test that should return 'ok' and message displayed on the slack channel room.</p>
+<p><img class="jive-image image-4" src="/servlet/JiveServlet/downloadImage/38-965449-1288537/pastedImage_16.png" __jive_id="1288537" /></p>
+<p></p>
+<p>This conclude that our webhook is working. Next is to use this webhook into prometheus alertmanager.</p>
+<h3></h3>
+<h4><span style="text-decoration: underline;"><em><strong>1.3.3 Configure secret for alertmanager.</strong></em></span></h4>
+<p><span>1. Login to the OCP.</span></p>
+<p></p>
+<p><span>2. Export and save current secret.</span></p>
+<pre class="language-none line-numbers"><code>[root@bastion 3.11]# oc export secret alertmanager-main -n openshift-monitoring &gt; alertmanager-main.yaml<br />Command "export" is deprecated, use the oc get --export<br />&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>3. Create the new alertmanager-main.yaml that include slack plugin.</p>
+<pre class="language-none line-numbers"><code>[root@bastion 3.11]# cat alertmanager.yaml <br />global:<br />&nbsp; resolve_timeout: 5m<br />route:<br />&nbsp; group_wait: 30s<br />&nbsp; group_interval: 5m<br />&nbsp; repeat_interval: 12h<br />&nbsp; receiver: default<br />&nbsp; routes:<br />&nbsp; - match:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alertname: DeadMansSwitch<br />&nbsp;&nbsp;&nbsp; repeat_interval: 5m<br />&nbsp;&nbsp;&nbsp; receiver: slack_general<br />receivers:<br />- name: default<br />- name: deadmansswitch<br />- name: slack_general<br />&nbsp; slack_configs:<br />&nbsp; - api_url: https://hooks.slack.com/services/TEKMSBUKD/BEM7BV3RC/XXXXXXXXXX<br />&nbsp;&nbsp;&nbsp; channel: '#general'<br />&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>4. Delete and recreate the secret.</p>
+<pre class="language-none line-numbers"><code>[root@bastion 3.11]# oc delete secret alertmanager-main -n openshift-monitoring<br />secret "alertmanager-main" deleted<br /><br />[root@bastion 3.11]# oc create secret generic alertmanager-main --from-file=alertmanager.yaml -n openshift-monitoring<br />secret/alertmanager-main created<br />&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>5. Once the new secret created, alertmanager will reload the new configuration.</p>
+<p><img class="image-7 jive-image" src="/servlet/JiveServlet/downloadImage/38-965449-1288541/pastedImage_1.png" __jive_id="1288541" /></p>
+<p></p>
+<p>6. The configuration from alertmanager look like this now:</p>
+<p><a class="link-titled" href="https://alertmanager-main-openshift-monitoring.cloudapps.bytewise.com.my/#/status" title="https://alertmanager-main-openshift-monitoring.cloudapps.bytewise.com.my/#/status">https://alertmanager-main-openshift-monitoring.cloudapps.example.com/#/status</a>&nbsp;</p>
+<p></p>
+<p><img class="image-5 jive-image" src="/servlet/JiveServlet/downloadImage/38-965449-1288538/pastedImage_18.png" __jive_id="1288538" /></p>
+<p></p>
+<h3><span style="text-decoration: underline;"><strong>1.4 VERIFICATION</strong></span></h3>
+<p>1. From the Slack channel, there will be message displayed:</p>
+<p></p>
+<p><img class="image-6 jive-image" src="/servlet/JiveServlet/downloadImage/38-965449-1288539/pastedImage_19.png" __jive_id="1288539" /></p>
+<h1></h1>
+<h2><span style="text-decoration: underline;"><strong>2. PROMETHEUS OPERATIONAL TEST</strong></span></h2>
+<p></p>
+<h3><span style="text-decoration: underline;"><strong>2.1 INTRODUCTION</strong></span></h3>
+<p>At this stage, we have test alerting pipeline from Prometheus to Slack using incoming webhook. Now we going to test actual operation of the Prometheus monitoring and alerting.</p>
+<p></p>
+<p>As a test case, we are going:</p>
+<p>1. Edit custom resource definition(CRD) of the Prometheus rule so that:</p>
+<p>&nbsp;&nbsp;&nbsp;- any node that has pod running more than 5 pods are in the critical state</p>
+<p>2. Fire alert if condition above stay more than 2 minutes.</p>
+<p></p>
+<h3><span style="text-decoration: underline;"><strong>2.1.A PRE-REQS</strong></span></h3>
+<p>Reconfigure alertmanager.yaml as below using above section guide:</p>
+<pre class="language-none line-numbers"><code>global:<br />&nbsp; resolve_timeout: 5m<br />route:<br />&nbsp; group_wait: 30s<br />&nbsp; group_interval: 5m<br />&nbsp; repeat_interval: 12h<br />&nbsp; receiver: default<br />&nbsp; routes:<br />&nbsp; - match:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alertname: DeadMansSwitch<br />&nbsp;&nbsp;&nbsp; repeat_interval: 5m<br />&nbsp;&nbsp;&nbsp; receiver: deadmansswitch<br />receivers:<br />- name: default<br />&nbsp; slack_configs:<br />&nbsp; - api_url: https://hooks.slack.com/services/TEKMSBUKD/BEM7BV3RC/XXXXXXX<br />&nbsp;&nbsp;&nbsp; channel: "#general"<br />- name: deadmansswitch<br />&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p></p>
+<p></p>
+<h3><span style="text-decoration: underline;"><strong>2.2 CONFIGURATION STEPS</strong></span></h3>
+<p></p>
+<p>1.&nbsp;Create a new&nbsp;CRD for prometheus-k8s-rules.</p>
+<pre class="language-none line-numbers"><code>[root@master01 ~]# oc get prometheusrule prometheus-k8s-rules -o yaml &gt; prometheus-k8s-rules.yaml&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>2. Change the definition of the alert below</p>
+<p>Before:</p>
+<pre class="language-none line-numbers"><code>---- TRUNCATED ----<br />&nbsp; <br />&nbsp; - alert: KubeletTooManyPods<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; annotations:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message: Kubelet {{$labels.instance}} is running {{$value}} pods, close to<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the limit of 110.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; expr: |<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kubelet_running_pod_count{job="kubelet"} &gt; 100<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for: 15m<br /><br />---- TRUNCATED ----&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>After:</p>
+<pre class="language-none line-numbers"><code>---- TRUNCATED ----<br />&nbsp; <br />&nbsp; - alert: KubeletTooManyPods<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; annotations:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message: Kubelet {{$labels.instance}} is running {{$value}} pods, close to<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the limit of 110.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; expr: |<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kubelet_running_pod_count{job="kubelet"} &gt; 10<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for: 2m<br /><br />---- TRUNCATED ----&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>3. Delete current&nbsp;prometheus-k8s-rules.</p>
+<pre class="language-none line-numbers"><code>[root@master01 ~]# oc delete prometheusrule prometheus-k8s-rules<br />prometheusrule.monitoring.coreos.com "prometheus-k8s-rules" deleted<br />&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>4. Create new edited rules.</p>
+<pre class="language-none line-numbers"><code>[root@master01 ~]# oc create -f prometheus-k8s-rules.yaml<br />prometheusrule.monitoring.coreos.com/prometheus-k8s-rules created<br />[root@master01 ~]# <br />&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>&nbsp;5. Edit the prometheus-k8s-rulefiles-0&nbsp;configMap and removed below labels.</p>
+<p><span style="text-decoration: underline;"><strong>NOTE:</strong> </span>This is necessary due to whatever changes to the prometheusrule and configMap will be&nbsp;reconciled by prometheus config/configmap reloader&nbsp;to default value if these labels exists. Current document update in-progress[1].</p>
+<p></p>
+<pre class="language-none line-numbers"><code>&nbsp; labels:<br />&nbsp;&nbsp;&nbsp; managed-by: prometheus-operator<br />&nbsp;&nbsp;&nbsp; prometheus-name: k8s&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;&zwj;<span class="line-numbers-rows"><span>&zwj;</span><span>&zwj;</span><span>&zwj;</span></span></code></pre>
+<p></p>
+<p>6. Observe&nbsp;<a class="link-titled" href="https://prometheus-k8s-openshift-monitoring.cloudapps.bytewise.com.my/alerts" title="https://prometheus-k8s-openshift-monitoring.cloudapps.bytewise.com.my/alerts">https://prometheus-k8s-openshift-monitoring.cloudapps.example.com.my/alerts</a>. The detection is now in state pending, counter are ticking for 2m.</p>
+<p></p>
+<p><img class="jive-image image-8" src="/servlet/JiveServlet/downloadImage/38-965449-1288598/pastedImage_11.png" __jive_id="1288598" /></p>
+<p></p>
+<p>7. Once the timer timed out, we can see the alert being sent to Slack channel room.</p>
+<p></p>
+<p><img class="image-9 jive-image" src="/servlet/JiveServlet/downloadImage/38-965449-1288599/pastedImage_13.png" __jive_id="1288599" /></p>
+<p></p>
+<p>And also from the alert status page:</p>
+<p><img class="jive-image image-10" src="/servlet/JiveServlet/downloadImage/38-965449-1288607/pastedImage_2.png" __jive_id="1288607" /></p>
+<p></p>
+<p>[1]:&nbsp;<a class="link-titled" href="https://github.com/openshift/openshift-docs/issues/12500" title="https://github.com/openshift/openshift-docs/issues/12500">Prometheus Cluster Monitoring - custom configuration description improvements &middot; Issue #12500 &middot; openshift/openshift-docs &hellip;</a>&nbsp;</p>
+<p></p>
+<p></p>
+<h1><span style="text-decoration: underline;">OTHER REFERENCES</span></h1>
+<p>1.&nbsp;<a class="link-titled" href="https://github.com/prometheus/alertmanager/blob/master/doc/examples/simple.yml" title="https://github.com/prometheus/alertmanager/blob/master/doc/examples/simple.yml">alertmanager/simple.yml at master &middot; prometheus/alertmanager &middot; GitHub</a>&nbsp;</p>
+<p>2.&nbsp;<a class="link-titled" href="https://coreos.com/tectonic/docs/latest/tectonic-prometheus-operator/user-guides/configuring-prometheus-alertmanager.html" title="https://coreos.com/tectonic/docs/latest/tectonic-prometheus-operator/user-guides/configuring-prometheus-alertmanager.html">Configuring Prometheus Alertmanager</a>&nbsp;</p>
+<p>3.&nbsp;<a class="link-titled" href="https://prometheus.io/docs/alerting/configuration/" title="https://prometheus.io/docs/alerting/configuration/">https://prometheus.io/docs/alerting/configuration/</a>&nbsp;</p>
