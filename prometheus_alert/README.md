@@ -216,10 +216,13 @@ And also from the alert status page:
 
 ## REFERENCES
 
-[1.alertmanager/simple.yml at master · prometheus/alertmanager · GitHub ](https://github.com/prometheus/alertmanager/blob/master/doc/examples/simple.yml)
 
-[2. Configuring Prometheus Alertmanager ](https://coreos.com/tectonic/docs/latest/tectonic-prometheus-operator/user-guides/configuring-prometheus-alertmanager.html)
+1.  <a href="https://github.com/prometheus/alertmanager/blob/master/doc/examples/simple.yml" target="_blank">alertmanager/simple.yml at master · prometheus/alertmanager · GitHub</a>
 
-[3. https://prometheus.io/docs/alerting/configuration/ ](https://prometheus.io/docs/alerting/configuration/)
+2. <a href="https://coreos.com/tectonic/docs/latest/tectonic-prometheus-operator/user-guides/configuring-prometheus-alertmanager.html" target="_blank">Configuring Prometheus Alertmanager</a>
+
+
+3. <a href="https://prometheus.io/docs/alerting/configuration/ " target="_blank">Prometheus Alerting Configuration</a>
+
 
 [>>BACK TO MAIN MENU](https://aizuddin85.github.io/)

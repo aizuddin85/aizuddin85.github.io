@@ -31,7 +31,9 @@ On all master nodes:
 
 ### __ROUTER.__
 
-There are several built-in router cipher suite [[1]](https://docs.openshift.com/container-platform/3.11/install_config/router/default_haproxy_router.html#bind-ciphers). To set router cipher to modern, update the router dc environment.
+There are several built-in router cipher suite
+<a href="https://docs.openshift.com/container-platform/3.11/install_config/router/default_haproxy_router.html#bind-cipherss" target="_blank">[1]</a>
+
 
 ```
 [root@bastion 3.11]# oc set env dc/router ROUTER_CIPHERS=modern
@@ -134,10 +136,12 @@ Nmap done: 1 IP address (1 host up) scanned in 0.74 seconds
   
 ## __5. REFERENCES__
 
-1. [Configure cipher-suites in etcd daemon?](https://mojo.redhat.com/external-link.jspaurl=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F3499651)
-2. [How to create a secured route using only a specific cipher? ](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F3301341)
-3. [Change the OpenShift router's SSL Protocol and Supported Cipher list?](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F2989001)
-4. [Set ciphers and tls version for OpenShift Container Platform?](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F3374601)
+1. <a href="https://access.redhat.com/solutions/3499651" target="_blank">Configure cipher-suites in etcd daemon?</a> 
 
+2. <a href="https://access.redhat.com/solutions/3301341" target="_blank">How to create a secured route using only a specific cipher?</a>
+
+3. <a href="https://access.redhat.com/solutions/2989001" target="_blank">Change the OpenShift router's SSL Protocol and Supported Cipher list?</a>
+
+4. <a href="https://access.redhat.com/solutions/3374601" target="_blank">Set ciphers and tls version for OpenShift Container Platform</a>
 
 [>>BACK TO MAIN MENU](https://aizuddin85.github.io/)
