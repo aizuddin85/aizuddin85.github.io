@@ -1,3 +1,5 @@
+[>>BACK TO MAIN MENU](https://aizuddin85.github.io/)
+
 # __OCP 3.11: RECEIVING ALERT FROM PROMETHEUS (with Slack Integration)__
 This wiki consists of two major sections:  
 1. Simple Alerting Test using '*DeadMansSwitch*'.
@@ -218,3 +220,5 @@ And also from the alert status page:
 [2. Configuring Prometheus Alertmanager ](https://coreos.com/tectonic/docs/latest/tectonic-prometheus-operator/user-guides/configuring-prometheus-alertmanager.html)
 
 [3. https://prometheus.io/docs/alerting/configuration/ ](https://prometheus.io/docs/alerting/configuration/)
+
+[>>BACK TO MAIN MENU](https://aizuddin85.github.io/)

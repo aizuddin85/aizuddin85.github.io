@@ -1,3 +1,4 @@
+[>>BACK TO MAIN MENU](https://aizuddin85.github.io/)
 # ENABLING MODERN TLS & CIPHERS ON ROUTER & MASTER
 
 ## __1. INTRODUCTION__
@@ -137,3 +138,6 @@ Nmap done: 1 IP address (1 host up) scanned in 0.74 seconds
 2. [How to create a secured route using only a specific cipher? ](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F3301341)
 3. [Change the OpenShift router's SSL Protocol and Supported Cipher list?](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F2989001)
 4. [Set ciphers and tls version for OpenShift Container Platform?](https://mojo.redhat.com/external-link.jspa?url=https%3A%2F%2Faccess.redhat.com%2Fsolutions%2F3374601)
+
+
+[>>BACK TO MAIN MENU](https://aizuddin85.github.io/)
