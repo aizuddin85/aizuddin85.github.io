@@ -18,7 +18,7 @@ DeadMansSwitch is one of the default general.rules that to ensure that the entir
 
 In bird eye view, the steps are:
 
-1. [Install and Enable Slack incoming WebHook](https://api.slack.com/incoming-webhooks)
+1. <a href="https://api.slack.com/incoming-webhooks" target="_blank">Install and Enable Slack incoming WebHook</a>
 
 2. Configure secret for AlertManager & Test trigger
 
@@ -192,8 +192,9 @@ prometheusrule.monitoring.coreos.com/prometheus-k8s-rules created
 
  5. Edit the prometheus-k8s-rulefiles-0 configMap and **removed** below labels.
 
-**NOTE**: This is necessary due to whatever changes to the prometheusrule and configMap will be reconciled by prometheus config/configmap reloader to default value if these labels exists. Current document update in-progress[[1]](https://github.com/openshift/openshift-docs/issues/12500).
+**NOTE**: This is necessary due to whatever changes to the prometheusrule and configMap will be reconciled by prometheus config/configmap reloader to default value if these labels exists. Current 3.11.43-1 version does not support custom rules. <a href="https://access.redhat.com/documentation/en-us/openshift_container_platform/3.11/html/configuring_clusters/prometheus-cluster-monitoring#alerting-rules" target="_blank">[1]</a>
 
+Doing this will break Prometheus reloader. Do this ONLY on testing system.
 ```
   labels:
     managed-by: prometheus-operator
