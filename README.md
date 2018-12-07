@@ -1,10 +1,10 @@
 
 
 
-# __OPENSHIFT WIKI PAGE__ 
+# __MY WIKI PAGE__ 
 <br/><br/>
 
-## __TOPICS__  
+## __OPENSHIFT TOPICS__  
 
 ### <a href="https://aizuddin85.github.io/ciphers_tls/" target="_blank">1. ENABLING MODERN TLS & CIPHERS ON ROUTER & MASTER</a>  
 
