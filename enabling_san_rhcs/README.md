@@ -55,7 +55,6 @@ basicConstraints = CA:FALSE
 keyUsage = keyEncipherment, dataEncipherment,digitalSignature
 extendedKeyUsage = serverAuth, 1.3.6.1.5.5.8.2.2
 subjectAltName = @alt_name
-
 [alt_name]
 DNS.1=ocpmaster.xxx.net
 DNS.2=ocpmaster-int.xxx.net
