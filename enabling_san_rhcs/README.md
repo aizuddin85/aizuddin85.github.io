@@ -38,7 +38,7 @@ policyset.serverCertSet.list=1,2,3,4,5,6,7,8,9
 systemctl restart pki-tomcatd.target
 ```
 
-3. Create a new CSR with below configurations:
+3. Create a new CSR with below configurations:  
 ```
 [req] distinguished_name = req_distinguished_name
 req_extensions = v3_req
@@ -60,9 +60,9 @@ DNS.1=ocpmaster.xxx.net
 DNS.2=ocpmaster-int.xxx.net
 ```
 
-4. Create a CSR from above config:
+4. Create a CSR from above config:  
 ```
 openssl req -out master.csr -newkey rsa:2048 -nodes -keyout master.key -config master.conf
 ```
-
-5.Submit the CSR for signing into RHCS and your final certificate should have SAN entry after signing.
+ 
+5. Submit the CSR for signing into RHCS and your final certificate should have SAN entry after signing.
