@@ -134,6 +134,7 @@ listen     stats          127.0.0.1:5000
 HAPROXY01 (Note on how 'priority'  being set to declare a MASTER/BACKUP, higher prio --> MASTER)
 
 * HAPROXY01
+
 ```
 global_defs {
    router_id ocp_veep
@@ -181,6 +182,7 @@ vrrp_instance OCP_EXT_SECONDARY {
 ```
 
 * HAPROXY02
+
 ```
 global_defs {
    router_id ocp_veep
@@ -229,23 +231,23 @@ vrrp_instance OCP_EXT_PRIMARY {
 
 4. Start all services
 ```
-# systemctl start haproxy
-# systemctl start keepalived
-# systemctl start psmisc
+systemctl start haproxy
+systemctl start keepalived
+systemctl start psmisc
 ```
 
 5. In order to test, create index.html and allow port 8443/443 on real server.
 
 Repeat this command on all master.
 ```
-# echo "Hello from OCPMASTER01" > /root/index.html
+echo "Hello from OCPMASTER01" > /root/index.html
 ```
 
 
 6. Run python SimpleHTTPServer  to test the load balancing.
 ```
-# cd /root
-# python -m SimpleHTTPServer 8443
+cd /root
+python -m SimpleHTTPServer 8443
 ```
 
  7. Browse tp any of the VIP to port 8443 and refresh each time will point to different server index.html.
