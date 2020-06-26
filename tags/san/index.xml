@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>security on </title>
-    <link>https://aizuddin85.github.io/tags/security/</link>
-    <description>Recent content in security on </description>
+    <title>san on </title>
+    <link>https://aizuddin85.github.io/tags/san/</link>
+    <description>Recent content in san on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© {year}</copyright>
     <lastBuildDate>Fri, 26 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://aizuddin85.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://aizuddin85.github.io/tags/san/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>OpenShift3: Enabling Modern TLS Ciphers</title>
-      <link>https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/</link>
-      <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/</guid>
-      <description>ENABLING MODERN TLS &amp;amp; CIPHERS ON ROUTER &amp;amp; MASTER 1. INTRODUCTION During VA scan, some cipher considered as not safe and need to be disabled. There are two places that we need to configure:
-  Master
-  Router
-  2. CONFIGURATION STEPS MASTER. On all master nodes:
- Edit /etc/origin/master/master-origin.yaml  ... minTLSVersion: VersionTLS12 cipherSuites: - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 - TLS_RSA_WITH_AES_256_CBC_SHA - TLS_RSA_WITH_AES_128_CBC_SHA  Restart master components.  ROUTER. There are several built-in router cipher suite [1]</description>
-    </item>
     
     <item>
       <title>Red Hat Certificate System: Enabling SAN Extension</title>

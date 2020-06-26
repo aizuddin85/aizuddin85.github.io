@@ -13,7 +13,32 @@
   </url>
   
   <url>
+    <loc>https://aizuddin85.github.io/tags/certificate/</loc>
+    <lastmod>2020-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://aizuddin85.github.io/tags/cipher/</loc>
+    <lastmod>2020-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://aizuddin85.github.io/tags/haproxy/</loc>
+    <lastmod>2020-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://aizuddin85.github.io/tags/infrastructure/</loc>
+    <lastmod>2020-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://aizuddin85.github.io/blog/infrastructure/active-active-haproxy-lb/</loc>
+    <lastmod>2020-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://aizuddin85.github.io/tags/loadbalancer/</loc>
     <lastmod>2020-06-26T00:00:00+00:00</lastmod>
   </url>
   
@@ -23,7 +48,17 @@
   </url>
   
   <url>
-    <loc>https://aizuddin85.github.io/blog/enabling-modern-tls-cipher/</loc>
+    <loc>https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/</loc>
+    <lastmod>2020-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://aizuddin85.github.io/blog/red-hat-certificate-system/enabling-rhcs-san-ext/</loc>
+    <lastmod>2020-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://aizuddin85.github.io/tags/san/</loc>
     <lastmod>2020-06-26T00:00:00+00:00</lastmod>
   </url>
   

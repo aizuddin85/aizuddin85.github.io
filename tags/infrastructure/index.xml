@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>infrastructure on </title>
+    <link>https://aizuddin85.github.io/tags/infrastructure/</link>
+    <description>Recent content in infrastructure on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Fri, 26 Jun 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://aizuddin85.github.io/tags/infrastructure/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Infrastructure: Active-Active HAProxy Software Load Balancer</title>
+      <link>https://aizuddin85.github.io/blog/infrastructure/active-active-haproxy-lb/</link>
+      <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aizuddin85.github.io/blog/infrastructure/active-active-haproxy-lb/</guid>
+      <description>Active-Active HAProxy Software Load Balancer (with OCP Example) 1. INTRODUCTION In rare case, where there is a need to use HAProxy for load balancing for OpenShift, this blog should able to give an idea on how to setup. This setup has been running in Alliance Bank OCP Project, MY.
+2. PRE-REQ A. DNS round-robin (for active-active) record for master URLs and Apps route.
+B. Virtual Floating IP - depends on the requirement this can be single IP or multi IP for each particular route.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -13,16 +13,37 @@
     
     
     <item>
-      <title>OpenShift3: Enabling Modern TLS Ciphers</title>
-      <link>https://aizuddin85.github.io/blog/enabling-modern-tls-cipher/</link>
+      <title>Infrastructure: Active-Active HAProxy Software Load Balancer</title>
+      <link>https://aizuddin85.github.io/blog/infrastructure/active-active-haproxy-lb/</link>
       <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://aizuddin85.github.io/blog/enabling-modern-tls-cipher/</guid>
+      <guid>https://aizuddin85.github.io/blog/infrastructure/active-active-haproxy-lb/</guid>
+      <description>Active-Active HAProxy Software Load Balancer (with OCP Example) 1. INTRODUCTION In rare case, where there is a need to use HAProxy for load balancing for OpenShift, this blog should able to give an idea on how to setup. This setup has been running in Alliance Bank OCP Project, MY.
+2. PRE-REQ A. DNS round-robin (for active-active) record for master URLs and Apps route.
+B. Virtual Floating IP - depends on the requirement this can be single IP or multi IP for each particular route.</description>
+    </item>
+    
+    <item>
+      <title>OpenShift3: Enabling Modern TLS Ciphers</title>
+      <link>https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/</link>
+      <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/</guid>
       <description>ENABLING MODERN TLS &amp;amp; CIPHERS ON ROUTER &amp;amp; MASTER 1. INTRODUCTION During VA scan, some cipher considered as not safe and need to be disabled. There are two places that we need to configure:
   Master
   Router
   2. CONFIGURATION STEPS MASTER. On all master nodes:
  Edit /etc/origin/master/master-origin.yaml  ... minTLSVersion: VersionTLS12 cipherSuites: - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 - TLS_RSA_WITH_AES_256_CBC_SHA - TLS_RSA_WITH_AES_128_CBC_SHA  Restart master components.  ROUTER. There are several built-in router cipher suite [1]</description>
+    </item>
+    
+    <item>
+      <title>Red Hat Certificate System: Enabling SAN Extension</title>
+      <link>https://aizuddin85.github.io/blog/red-hat-certificate-system/enabling-rhcs-san-ext/</link>
+      <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aizuddin85.github.io/blog/red-hat-certificate-system/enabling-rhcs-san-ext/</guid>
+      <description>1. INTRODUCTION Subject Alternative Name or SAN provides alternative DNS name for single certificate. During SSL handshake, SNI or server name indication will be checked against the server certificate to make sure its match each other. This is to cater the use of single certificate over multiple SNI name.
+RHCS has certificate signer profiles when user submit their CSR (Certificate Signing Request) to the respective signing request. This profile has informations on what to be included into final certificate after signing.</description>
     </item>
     
   </channel>

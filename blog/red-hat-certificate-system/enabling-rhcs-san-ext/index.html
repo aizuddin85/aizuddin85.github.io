@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Red Hat Certificate System: Enabling SAN Extension | </title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="How to enable RH certificate system SAN extension">
+  <meta name="keywords" content="certificate , san , security , rhcs">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="/css/post.min.68038050a1a3965485a9c4bc230ecde060091ad4d9e1894e969c323edae3925d.css" integrity="sha256-aAOAUKGjllSFqcS8Iw7N4GAJGtTZ4YlOlpwyPtrjkl0="/>
+  
+    
+    <link rel="stylesheet" href="/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/aizuddin85.github.io\/"
+      },
+      "articleSection" : "blog",
+      "name" : "Red Hat Certificate System: Enabling SAN Extension",
+      "headline" : "Red Hat Certificate System: Enabling SAN Extension",
+      "description" : "How to enable RH certificate system SAN extension",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2020",
+      "datePublished": "2020-06-26 00:00:00 \x2b0000 UTC",
+      "dateModified" : "2020-06-26 00:00:00 \x2b0000 UTC",
+      "url" : "https:\/\/aizuddin85.github.io\/blog\/red-hat-certificate-system\/enabling-rhcs-san-ext\/",
+      "wordCount" : "242",
+      "keywords" : ["certificate", "san", "security", "rhcs", "Blog"]
+    }
+  
+  </script>
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" role="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="post">
+      <header class="post__header">
+        <h1 class="post__title">Red Hat Certificate System: Enabling SAN Extension</h1>
+        <time datetime="2020-06-26 00:00:00 &#43;0000 UTC" class="post__date"
+        >Jun 26 2020</time>
+      </header>
+      <article class="post__content">
+          
+<h2 id="__1-introduction__"><strong>1. INTRODUCTION</strong><a class="anchor" href="#__1-introduction__">#</a></h2>
+<p>Subject Alternative Name or SAN provides alternative DNS name for single certificate. During SSL handshake, SNI or server name indication will be checked against the server certificate to make sure its match each other. This is to cater the use of single certificate over multiple SNI name.</p>
+<p>RHCS has certificate signer profiles when user submit their CSR (Certificate Signing Request) to the respective signing request. This profile has informations on what to be included into final certificate after signing.</p>
+<p>By default, RHCS serverCert profile does not include SAN as part of the certificate X509 extension. We need to enable this into the profile.</p>
+<h2 id="__2-configuration-steps__"><strong>2. CONFIGURATION STEPS</strong><a class="anchor" href="#__2-configuration-steps__">#</a></h2>
+<ol>
+<li>Edit /var/lib/pki/pki-tomcat/ca/profiles/ca/caServerCert.cfg and add below lines and add the <code>&lt;number&gt;</code> into policyset.serverCertSet.list:</li>
+</ol>
+<pre><code>policyset.&lt;profile&gt;.&lt;number&gt;.constraint.class_id=noConstraintImpl
+policyset.&lt;profile&gt;.&lt;number&gt;.constraint.name=No Constraint
+policyset.&lt;profile&gt;.&lt;number&gt;.constraint.subjAltNameExtCritical=false
+policyset.&lt;profile&gt;.&lt;number&gt;.default.class_id=userExtensionDefaultImpl
+policyset.&lt;profile&gt;.&lt;number&gt;.default.name=User Supplied Extension Default
+policyset.&lt;profile&gt;.&lt;number&gt;.default.params.userExtOID=2.5.29.17
+</code></pre>
+<p>In my case, it looks like this:</p>
+<pre><code>policyset.serverCertSet.9.constraint.class_id=noConstraintImpl
+policyset.serverCertSet.9.constraint.name=No Constraint
+policyset.serverCertSet.9.constraint.subjAltNameExtCritical=false
+policyset.serverCertSet.9.default.class_id=userExtensionDefaultImpl
+policyset.serverCertSet.9.default.name=User Supplied Extension Default
+policyset.serverCertSet.9.default.params.userExtOID=2.5.29.17
+policyset.serverCertSet.list=1,2,3,4,5,6,7,8,9
+</code></pre>
+<ol start="2">
+<li>Restart pki.</li>
+</ol>
+<pre><code>systemctl restart pki-tomcatd.target
+</code></pre>
+<ol start="3">
+<li>Create a new CSR with below configurations:</li>
+</ol>
+<pre><code>[req] distinguished_name = req_distinguished_name
+req_extensions = v3_req
+prompt = no
+[req_distinguished_name]
+C = MY
+ST = Selangor
+L = Sepang
+O = Red Hat
+OU = Consulting
+CN = ocpmaster01.xxx.net
+[v3_req]
+basicConstraints = CA:FALSE
+keyUsage = keyEncipherment, dataEncipherment,digitalSignature
+extendedKeyUsage = serverAuth, 1.3.6.1.5.5.8.2.2
+subjectAltName = @alt_name
+[alt_name]
+DNS.1=ocpmaster.xxx.net
+DNS.2=ocpmaster-int.xxx.net
+</code></pre>
+<ol start="4">
+<li>Create a CSR from above config:</li>
+</ol>
+<pre><code>openssl req -out master.csr -newkey rsa:2048 -nodes -keyout master.key -config master.conf
+</code></pre>
+<ol start="5">
+<li>Submit the CSR for signing into RHCS and your final certificate should have SAN entry after signing.</li>
+</ol>
+
+
+          
+      </article>
+        
+
+<ul class="tags__list">
+    
+    <li class="tag__item">
+        <a class="tag__link" href="https://aizuddin85.github.io/tags/certificate/">certificate</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://aizuddin85.github.io/tags/san/">san</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://aizuddin85.github.io/tags/security/">security</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+
+  
+    <a class="pagination__item" href="https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/">
+      <span class="pagination__label">Next Post</span>
+      <span class="pagination__title" >OpenShift3: Enabling Modern TLS Ciphers</a>
+    </a>
+  
+</div>
+
+    </div>
+
+    
+    
+
+  </main>
+
+  
+  <footer>
+      
+
+
+<div class="social-icons">
+  
+     
+    
+  
+     
+    
+      <a class="social-icons__icon" title="GitHub"
+         style="background-image: url(/images/social/github.svg)" 
+         href="https://github.com/aizuddin85"
+         target="_blank" rel="noopener">
+      </a>
+    
+  
+     
+    
+  
+     
+    
+  
+     
+    
+  
+     
+    
+  
+     
+    
+  
+     
+    
+     
+</div>
+
+    <p>© 2020</p>
+  </footer>
+
+
+  
+  <script src="/js/index.min.49e4d8a384357d9b445b87371863419937ede9fa77737522ffb633073aebfa44.js" integrity="sha256-SeTYo4Q1fZtEW4c3GGNBmTft6fp3c3Ui/7YzBzrr&#43;kQ=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+</body>
+
+</html>

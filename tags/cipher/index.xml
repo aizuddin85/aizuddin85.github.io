@@ -14,10 +14,10 @@
     
     <item>
       <title>OpenShift3: Enabling Modern TLS Ciphers</title>
-      <link>https://aizuddin85.github.io/blog/enabling-modern-tls-cipher/</link>
+      <link>https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/</link>
       <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://aizuddin85.github.io/blog/enabling-modern-tls-cipher/</guid>
+      <guid>https://aizuddin85.github.io/blog/openshift3/enabling-modern-tls-cipher/</guid>
       <description>ENABLING MODERN TLS &amp;amp; CIPHERS ON ROUTER &amp;amp; MASTER 1. INTRODUCTION During VA scan, some cipher considered as not safe and need to be disabled. There are two places that we need to configure:
   Master
   Router
