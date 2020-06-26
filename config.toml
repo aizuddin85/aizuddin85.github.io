@@ -11,7 +11,7 @@ theme = "hugo-theme-codex"
 
 # REMOVE THIS!
 # This is only to get the exampleSite to work in this repo.
-themesDir = "../../" 
+themesDir = "./themes" 
 
 # Add your Disqus shortname here.
 # disqusShortname = ""
