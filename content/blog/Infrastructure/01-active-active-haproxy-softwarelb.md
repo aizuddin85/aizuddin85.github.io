@@ -48,7 +48,7 @@ D. FLOATING-IP
  
 ## __3. HIGH LEVEL OVERVIEW__
 
-![alt text](content/blog/Infrastructure/images/overview.png "ha-sw-lb-overview")
+![alt text](https://aizuddin85.github.io/content/blog/Infrastructure/images/overview.png "ha-sw-lb-overview")
 
 
 ## __4. CONFIGURATION STEPS__
